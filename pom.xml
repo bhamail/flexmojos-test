@@ -1,0 +1,150 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+
+    Flexmojos is a set of maven goals to allow maven users to compile, optimize and test Flex SWF, Flex SWC, Air SWF and Air SWC.
+    Copyright (C) 2008-2012  Marvin Froeder <marvin@flexmojos.net>
+
+    This program is free software: you can redistribute it and/or modify
+    it under the terms of the GNU General Public License as published by
+    the Free Software Foundation, either version 3 of the License, or
+    (at your option) any later version.
+
+    This program is distributed in the hope that it will be useful,
+    but WITHOUT ANY WARRANTY; without even the implied warranty of
+    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+    GNU General Public License for more details.
+
+    You should have received a copy of the GNU General Public License
+    along with this program.  If not, see <http://www.gnu.org/licenses/>.
+
+-->
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+
+    <groupId>com.myco.model</groupId>
+    <artifactId>lib-model</artifactId>
+    <version>1.0.0-SNAPSHOT</version>
+    <packaging>swc</packaging>
+
+    <name>lib-model Flex</name>
+
+    <properties>
+        <flexmojos.version>6.0.0</flexmojos.version>
+        <flex.version>4.9.1.1447119</flex.version>
+
+        <!-- Point to standalone flashplayer -->
+        <flex.flashPlayer.command>/home/dan/downloads/flashplayer-11.2/flashplayerdebugger</flex.flashPlayer.command>
+    </properties>
+
+    <build>
+        <sourceDirectory>src/main/flex</sourceDirectory>
+        <testSourceDirectory>src/test/flex</testSourceDirectory>
+        <plugins>
+            <plugin>
+                <groupId>net.flexmojos.oss</groupId>
+                <artifactId>flexmojos-maven-plugin</artifactId>
+                <version>${flexmojos.version}</version>
+                <extensions>true</extensions>
+                <dependencies>
+                    <dependency>
+                        <groupId>com.adobe.flex</groupId>
+                        <artifactId>compiler</artifactId>
+                        <version>${flex.version}</version>
+                        <type>pom</type>
+                    </dependency>
+
+                    <!-- only need adt dep for AIR project -->
+<!--
+                    <dependency>
+                        <groupId>com.adobe.air.compiler</groupId>
+                        <artifactId>adt</artifactId>
+                        <version>3.4</version>
+                        <type>jar</type>
+                    </dependency>
+-->
+                </dependencies>
+                <configuration>
+                    <storepass/>
+                    <debug>true</debug>
+                </configuration>
+            </plugin>
+        </plugins>
+    </build>
+
+    <dependencies>
+        <dependency>
+            <groupId>com.adobe.flex.framework</groupId>
+            <artifactId>flex-framework</artifactId>
+            <type>pom</type>
+        </dependency>
+
+        <dependency>
+            <groupId>com.adobe.flash.framework</groupId>
+            <artifactId>playerglobal</artifactId>
+            <type>rb.swc</type>
+            <version>11.4</version>
+            <!-- external scope when used in a library project -->
+            <scope>external</scope>
+        </dependency>
+
+        <!-- flexunit is published in 'flex-unit-repository':https://oss.sonatype.org/content/repositories/releases -->
+        <dependency>
+            <groupId>org.flexunit</groupId>
+            <artifactId>flexunit</artifactId>
+            <version>4.1.0</version>
+            <classifier>flex4</classifier>
+            <type>swc</type>
+            <scope>test</scope>
+        </dependency>
+    </dependencies>
+
+    <dependencyManagement>
+        <dependencies>
+            <dependency>
+                <groupId>com.adobe.flex</groupId>
+                <artifactId>framework</artifactId>
+                <version>${flex.version}</version>
+                <type>pom</type>
+                <scope>import</scope>
+            </dependency>
+        </dependencies>
+    </dependencyManagement>
+
+    <!-- Repository and PluginRepository section for Flex SDK and compiler dependencies.
+         Note: instead of including this in every POM, you can append it to your user (~/.m2/settings.xml) or global
+            (M2_HOME/conf/settings.xml) settings file.
+      -->
+    <repositories>
+        <repository>
+            <id>flex-mojos-repository</id>
+            <url>http://repository.sonatype.org/content/groups/flexgroup</url>
+            <releases> <enabled>true</enabled> </releases>
+            <snapshots> <enabled>false</enabled> </snapshots>
+        </repository>
+
+        <repository>
+            <id>flex-unit-repository</id>
+            <url>https://oss.sonatype.org/content/repositories/releases</url>
+            <releases> <enabled>true</enabled> </releases>
+            <snapshots> <enabled>false</enabled> </snapshots>
+        </repository>
+    </repositories>
+
+    <pluginRepositories>
+        <pluginRepository>
+            <id>flex-mojos-plugin-repository</id>
+            <url>http://repository.sonatype.org/content/groups/flexgroup</url>
+            <releases> <enabled>true</enabled> </releases>
+            <snapshots> <enabled>false</enabled> </snapshots>
+        </pluginRepository>
+
+        <pluginRepository>
+            <id>flex-unit-repository</id>
+            <url>https://oss.sonatype.org/content/repositories/releases</url>
+            <releases> <enabled>true</enabled> </releases>
+            <snapshots> <enabled>false</enabled> </snapshots>
+        </pluginRepository>
+    </pluginRepositories>
+
+</project>
